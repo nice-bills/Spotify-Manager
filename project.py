@@ -33,6 +33,7 @@ def create_playlist(name):
 def add_track_to_playlist(playlist_id, track_uri):
     sp.playlist_add_items(playlist_id=playlist_id, items=track_uri)
     print(f"'{track_name}' has been added to playlist successfully!")
+    
 # Function to remove a track from a playlist
 def remove_track_from_playlist(playlist_id, track_uri):
     sp.playlist_remove_all_occurrences_of_items(playlist_id=playlist_id, items=track_uri)
