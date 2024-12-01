@@ -45,6 +45,7 @@ def main():
     if not token:
         print("Failed to get access token.")
         return
+    print("\n          ********************\nWELCOME TO YOUR SPOTIFY PLAYLIST MANAGER\n          *******************")
     while True:
         print("\nMain Menu:")
         print("1. Create Playlist")
