@@ -5,14 +5,14 @@ from dotenv import load_dotenv
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from project import add_track_to_playlist, remove_track_from_playlist 
+ 
 
 load_dotenv()
 
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 redirect_uri = 'http://localhost:5000/callback'
-scope = "playlist-read-private user-read-private playlist-modify-public"
+scope = "playlist-read-private user-read-private playlist-modify-public playlist-modify-private user-library-read user-top-read"
 
 user_id = None
 
@@ -50,25 +50,6 @@ def get_user_id():
     user_id = user_info['id']
     return user_id
 
-# # Function to create a playlist
-# def create_playlist(name):
-#     global user_id
-#     if user_id is None:
-#         get_user_id()  # Ensure user_id is set
-#     playlist = sp.user_playlist_create(user=user_id, name= name, public=True)
-#     print(f"Playlist '{name}' created successfully!")
-#     # print(playlist["id"])
-#     global playlist_id
-#     playlist_id = playlist["id"]
-#     return playlist_id
-
-
-# Function to get user's playlists
-def get_user_playlists():
-    playlists = sp.current_user_playlists()
-    return playlists["items"]
-
-
 
 # function to search tracks of your choice
 def search_track(token, track_name):
@@ -86,77 +67,35 @@ def search_track(token, track_name):
     return tracks
 
 # Function to get an artist's top tracks
-def get_artist_top_tracks(token, artist_name):
-    search_url = f'https://api.spotify.com/v1/search?q={artist_name}&type=artist&limit=10'
-    headers = {
-        'Authorization': f'Bearer {token}'
-    }
-    search_response = requests.get(search_url, headers=headers)
-
-    if search_response.status_code != 200:
-        print("Error searching for artist:", search_response.json())
+def get_artist_top_tracks(artist_name):
+    # Get the artist ID from the artist name
+    artist_id = get_artist_id(artist_name)
+    
+    if not artist_id:
         return []
+    
+    # Get the artist's top tracks
+    top_tracks = sp.artist_top_tracks(artist_id)
+    track_names = [track['name'] for track in top_tracks['tracks']]
+    
+    print(f"Top Tracks for {artist_name}:")
+    for index, name in enumerate(track_names, start=1):
+        print(f"{index}. {name}")
+    
+    return track_names
 
-    artists = search_response.json()['artists']['items']
+def get_artist_id(artist_name):
+    # Search for the artist by name
+    results = sp.search(q=artist_name, type='artist', limit=1)
+    artists = results.get('artists', {}).get('items', [])
+    
     if not artists:
-        print("No artist found.")
-        return []
+        print(f"No artist found for: {artist_name}")
+        return None
+    
+    # Return the first artist's ID
+    return artists[0]['id']
 
-    artist_id = artists[0]['id']  # Get the first artist's ID
-    top_tracks_url = f'https://api.spotify.com/v1/artists/{artist_id}/top-tracks?market=US'
-    top_tracks_response = requests.get(top_tracks_url, headers=headers)
 
-    if top_tracks_response.status_code != 200:
-        print("Error getting top tracks:", top_tracks_response.json())
-        return []
 
-# Function to add or remove songs from a selected playlist
-def manage_playlist_tracks(playlist_id):
-    token = get_access_token()
-    if not token:
-        print("Failed to get access token.")
-        return
-    while True:
-        print("\nManage Playlist Tracks:")
-        print("1. Add Track to Playlist")
-        print("2. Remove Track from Playlist")
-        print("3. Return to Previous Menu")
 
-        choice = input("Select an option: ")
-
-        if choice == '1':
-            track_name = input("Enter track name to add: ")
-            tracks = search_track(token, track_name)
-            if tracks:
-                print("Select a track to add:\n")
-                for index, track in enumerate(tracks):
-                    print(f"{index + 1}. {track['name']} by {', '.join([artist['name'] for artist in track['artists']])}")
-                track_index = int(input("Select track number: ")) - 1
-                if 0 <= track_index < len(tracks):
-                    add_track_to_playlist(playlist_id, [tracks[track_index]['uri']])
-                else:
-                    print("Invalid track selection.")
-            else:
-                print("No tracks found.")
-
-        elif choice == '2':
-            track_name = input("Enter track name to remove: ")
-            tracks = search_track(token, track_name)
-            if tracks:
-                print("Select a track to remove:\n")
-                for index, track in enumerate(tracks):
-                    print(f"{index + 1}. {track['name']} by {', '.join([artist['name'] for artist in track['artists']])}")
-                track_index = int(input("Select track number: ")) - 1
-                if 0 <= track_index < len(tracks):
-                    remove_track_from_playlist(playlist_id, [tracks[track_index]['uri']])
-                else:
-                    print("Invalid track selection.")
-            else:
-                print("No tracks found.")
-
-        elif choice == '3':
-            break
-
-        else:
-            print("Invalid option. Please try again.")
-            
