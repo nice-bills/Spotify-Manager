@@ -20,7 +20,7 @@ def get_user_playlists():
     for index, playlist in enumerate(playlists, start=1):
         print(f"{index}. {playlist['name']}")
 
-# Main function to run the Spotify Playlist Manager
+# Main function to run the Spotify Manager
 def main():
     token = get_access_token()
     if not token:
