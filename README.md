@@ -1,49 +1,110 @@
-# Spotify Playlist Management
+# Spotify Manager
 
 ## Overview
 
-The Spotify Playlist Management application is a powerful tool that allows users to efficiently manage their Spotify playlists through a user-friendly command-line interface. Built using the `spotipy` library, this application enables users to create new playlists, view existing playlists, and add or remove tracks with ease. Whether you're a casual listener or a music enthusiast, this application provides the necessary features to enhance your Spotify experience.
+#### Video Demo
 
-## Features
+**Spotify Manager** is a Python application that allows users to interact with the Spotify API to manage their music experience. This application provides functionalities such as searching for tracks, retrieving an artist's top songs, and displaying the user's playlists. It utilizes the Spotipy library for seamless interaction with the Spotify Web API and leverages OAuth for secure authentication.
 
-- **Create Playlist**: Users can create a new playlist directly in their Spotify account by simply providing a name for the playlist. This feature allows for personalized music organization tailored to any occasion or mood.
+## Table Of Contents
 
-- **View Playlists**: The application retrieves and displays all playlists associated with the user's Spotify account. This feature makes it easy to manage and select playlists for further actions.
+- [Features](#features)
 
-- **Manage Tracks**: Users can add or remove tracks from any selected playlist. The application allows for easy searching of tracks by name, providing a list of matching results for users to choose from.
+- [Installation](#installation)
 
-- **Search Tracks**: The application includes a robust search function that enables users to find specific tracks by name.
+- [Usage](#usage)
 
-- **Artiste Search**: Users can search for artists by name and view their top tracks.
+- [Authentication](#authentication)
 
-## Prerequisites
+- [Functions Overview](#functions-overview)
 
-Before running the application, ensure that you have the following:
+- [Contributing](#contributing)
 
-- **Python 3.x**: The application is built with Python, so you need to have Python installed on your machine.
-- **Spotify Developer Account**: Sign up for a Spotify Developer account to access the Spotify API.
-- **Spotify API Credentials**: Obtain your Client ID, Client Secret, and Redirect URI from the Spotify Developer Dashboard.
-- **Required Libraries**: The application requires the `spotipy`, `request` and `python-dotenv` libraries.
+### Features
 
-## Installation
+- **Display User Playlists**: The application fetches and displays the user's created playlists, providing a quick overview of their music collections.
 
-To get started with the Spotify Playlist Management application, follow these steps:
+- **Search For Tracks**: Users can search for their favorite tracks by entering the track name. The application will return a list of matching tracks along with their artists.
 
-1. **Clone the Repository**:
+- **Get Artist's Top Songs**: Users can input an artist's name to retrieve their top tracks, allowing for easy access to popular songs.
+
+- **Secure Authentication**: The application uses OAuth 2.0 for secure access to the Spotify API, ensuring that user credentials are handled safely.
+
+- **User-Friendly Interface**: The application is designed with a simple command-line interface, making it easy for users to navigate and use its features.
+
+### Installation
+
+To get started with the Spotify Manager, you would need to follow these steps:
+
+1.  **Download the Project**:
+
+    - Download the project files from the source where you obtained them and extract them to a directory of your choice.
+
+2.  **Install Dependencies**:
+
+    - Make sure you have Python installed on your system. You can download the latest version from the official Python website. Then, install the required packages using `pip`
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Set Up Environment Variables**:
+
+    - Create a `.env` file in the root of your project directory and add your Spotify API credentials:
+
+    ```python
+    CLIENT_ID = your_client_id
+    CLIENT_SECRET = your_client_secret
+    ```
+
+### Usage
+
+To run the application, execute the following command in your terminal:
 
 ```bash
-git clone https://github.com/yourusername/spotify-playlist-management.git
-cd spotify-playlist-management
+python project.py
 ```
 
-2. **Install Required Libraries**:
+Once the application is running, you will be presented with a main menu where you can choose from the following options:
 
-```bash
-pip install -r requirements.txt
-```
+1.  **Search for a Track**: Enter the name of the track you would like to search for.
 
-3. **Create a `.env` File from the .env.sample file**:
+2.  **Get Artist's Top Songs**: Enter the name of the artist you would like to retrieve top songs for.
 
-```
-cp .env.sample .env
-```
+3.  **Display Your Created Playlists**: View all playlists you have created on Spotify.
+
+4.  **Exit**: Quit the application.
+
+### Authentication
+
+The Spotify Manager uses OAuth 2.0 for secure authentication. The application requires a valid `CLIENT_ID` and `CLIENT_SECRET` from the Spotify Developer Dashboard. Follow these steps to obtain your credentials:
+
+1.  Go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
+
+2.  Log in or create an account.
+
+3.  Create a new application to get your `CLIENT_ID` and `CLIENT_SECRET`.
+
+4.  Set the `redirect_uri` to `http://localhost:5000/callback` in the Spotify Developer Dashboard.
+
+### Functions Overview
+
+The main functionalities of the application are found in several key functions:
+
+- **get_access_token()**: This function retrieves an access token from the Spotify API using the provided `CLIENT_ID` and `CLIENT_SECRET`.
+
+- **get_user_id()**: This function gets the user's ID from the Spotify API using the access token.
+
+- **get_user_playlists()**: This function retrieves the user's created playlists from the Spotify API using the access token and user ID.
+
+- **main()**: This is the main function that handles user input and calls the necessary functions to perform the desired actions.
+
+### Contributing
+
+Contributions are welcome! If you would like to contribute to the Spotify Manager project, please follow these steps:
+
+1. Identify the feature or bug you would like to work on.
+
+2. Make your changes and ensure they are well-tested.
+
+3. Document your changes clearly.
