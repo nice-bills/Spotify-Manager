@@ -7,10 +7,10 @@ import os
 
 load_dotenv()
 
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
-redirect_uri = 'http://localhost:5000/callback'
-scope ="playlist-read-private user-read-private playlist-modify-public playlist-modify-private user-library-read"
+# client_id = os.getenv("CLIENT_ID")
+# client_secret = os.getenv("CLIENT_SECRET")
+# redirect_uri = 'http://localhost:5000/callback'
+# scope ="playlist-read-private user-read-private playlist-modify-public playlist-modify-private user-library-read"
 user_id = None
 
 sp = spotipy.Spotify(auth_manager= SpotifyOAuth(client_id = client_id,client_secret = client_secret,redirect_uri = redirect_uri,scope = scope))
@@ -67,7 +67,9 @@ def main():
         print("2. Get Artist's Top Songs")
         print("3. Display your created playlist")
         print("4. Exit")
-
+        
+        print()
+        
         choice = input("Select an option: ")
 
         if choice == '1':

@@ -43,6 +43,7 @@ def get_artist_top_tracks(artist_name):
     top_tracks = sp.artist_top_tracks(artist_id)
     track_names = [track['name'] for track in top_tracks['tracks']]
     
+    print()
     print(f"Top Tracks for {artist_name}:")
     for index, name in enumerate(track_names, start=1):
         print(f"{index}. {name}")
