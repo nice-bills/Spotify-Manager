@@ -13,7 +13,7 @@ load_dotenv()
 # scope ="playlist-read-private user-read-private playlist-modify-public playlist-modify-private user-library-read"
 user_id = None
 
-sp = spotipy.Spotify(auth_manager= SpotifyOAuth(client_id = client_id,client_secret = client_secret,redirect_uri = redirect_uri,scope = scope))
+# sp = spotipy.Spotify(auth_manager= SpotifyOAuth(client_id = client_id,client_secret = client_secret,redirect_uri = redirect_uri,scope = scope))
 
 #this function allows for the user to get his token
 def get_access_token():

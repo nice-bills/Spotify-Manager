@@ -62,6 +62,51 @@ def get_artist_id(artist_name):
     # Return the first artist's ID
     return artists[0]['id']
 
+class TestFunctions():
 
+    def test_get_user_playlists(access_token):
+        # Create a Spotipy client with the provided access token
+        sp = spotipy.Spotify(auth=access_token)
+        
+        # Retrieve the user's playlists
+        playlists = sp.current_user_playlists()
+        
+        # Return the playlists as a list of dictionaries
+        return [{"id": playlist["id"], "name": playlist["name"], "owner": playlist["owner"]["display_name"]} for playlist in playlists["items"]]
 
+    def test_search_songs(query, access_token):
+        # Create a Spotipy client with the provided access token
+        sp = spotipy.Spotify(auth=access_token)
+        
+        # Search for tracks based on the query
+        results = sp.search(q=query, type='track', limit=10)
+        
+        # Return a list of track details
+        return [
+            {
+                "id": track["id"],
+                "name": track["name"],
+                "artists": [artist["name"] for artist in track["artists"]]
+            }
+            for track in results["tracks"]["items"]
+        ]
 
+    def test_get_artist_tracks(artist_id, access_token):
+        # Create a Spotipy client with the provided access token
+        sp = spotipy.Spotify(auth=access_token)
+        
+        # Retrieve the artist's albums
+        albums = sp.artist_albums(artist_id, album_type='album')
+        
+        tracks = []
+        
+        # Loop through each album to get the tracks
+        for album in albums['items']:
+            album_tracks = sp.album_tracks(album['id'])
+            for track in album_tracks['items']:
+                tracks.append({
+                    "id": track["id"],
+                    "name": track["name"],
+                })
+        
+        return tracks
