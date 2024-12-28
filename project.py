@@ -1,4 +1,3 @@
-# import the necessary functions 
 from my_module import *
 from dotenv import load_dotenv
 import base64
@@ -7,21 +6,12 @@ import os
 
 load_dotenv()
 
-# client_id = os.getenv("CLIENT_ID")
-# client_secret = os.getenv("CLIENT_SECRET")
-# redirect_uri = 'http://localhost:5000/callback'
-# scope ="playlist-read-private user-read-private playlist-modify-public playlist-modify-private user-library-read"
 user_id = None
 
-# sp = spotipy.Spotify(auth_manager= SpotifyOAuth(client_id = client_id,client_secret = client_secret,redirect_uri = redirect_uri,scope = scope))
-
-#this function allows for the user to get his token
 def get_access_token():
-    # Encode client ID and secret
     credentials = f"{client_id}:{client_secret}"
     encoded_credentials = base64.b64encode(credentials.encode()).decode()
 
-    # Request access token
     response = requests.post(
         'https://accounts.spotify.com/api/token',
         headers={

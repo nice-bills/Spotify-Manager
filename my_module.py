@@ -16,7 +16,6 @@ scope = "playlist-read-private user-read-private playlist-modify-public playlist
 
 sp = spotipy.Spotify(auth_manager= SpotifyOAuth(client_id = client_id,client_secret = client_secret,redirect_uri = redirect_uri,scope = scope))
 
-# function to search tracks of your choice
 def search_track(token, track_name):
     search_url = f'https://api.spotify.com/v1/search?q={track_name}&type=track&limit=10'
     headers = {
@@ -31,15 +30,12 @@ def search_track(token, track_name):
     tracks = search_response.json()['tracks']['items']
     return tracks
 
-# Function to get an artist's top tracks
 def get_artist_top_tracks(artist_name):
-    # Get the artist ID from the artist name
     artist_id = get_artist_id(artist_name)
     
     if not artist_id:
         return []
     
-    # Get the artist's top tracks
     top_tracks = sp.artist_top_tracks(artist_id)
     track_names = [track['name'] for track in top_tracks['tracks']]
     
@@ -51,7 +47,6 @@ def get_artist_top_tracks(artist_name):
     return track_names
 
 def get_artist_id(artist_name):
-    # Search for the artist by name
     results = sp.search(q=artist_name, type='artist', limit=1)
     artists = results.get('artists', {}).get('items', [])
     
@@ -59,29 +54,18 @@ def get_artist_id(artist_name):
         print(f"No artist found for: {artist_name}")
         return None
     
-    # Return the first artist's ID
     return artists[0]['id']
 
 class TestFunctions():
 
     def test_get_user_playlists(access_token):
-        # Create a Spotipy client with the provided access token
         sp = spotipy.Spotify(auth=access_token)
-        
-        # Retrieve the user's playlists
-        playlists = sp.current_user_playlists()
-        
-        # Return the playlists as a list of dictionaries
+        playlists = sp.current_user_playlists()        
         return [{"id": playlist["id"], "name": playlist["name"], "owner": playlist["owner"]["display_name"]} for playlist in playlists["items"]]
 
     def test_search_songs(query, access_token):
-        # Create a Spotipy client with the provided access token
-        sp = spotipy.Spotify(auth=access_token)
-        
-        # Search for tracks based on the query
-        results = sp.search(q=query, type='track', limit=10)
-        
-        # Return a list of track details
+        sp = spotipy.Spotify(auth=access_token)        
+        results = sp.search(q=query, type='track', limit=10)        
         return [
             {
                 "id": track["id"],
@@ -92,15 +76,11 @@ class TestFunctions():
         ]
 
     def test_get_artist_tracks(artist_id, access_token):
-        # Create a Spotipy client with the provided access token
         sp = spotipy.Spotify(auth=access_token)
-        
-        # Retrieve the artist's albums
         albums = sp.artist_albums(artist_id, album_type='album')
         
         tracks = []
-        
-        # Loop through each album to get the tracks
+                
         for album in albums['items']:
             album_tracks = sp.album_tracks(album['id'])
             for track in album_tracks['items']:
