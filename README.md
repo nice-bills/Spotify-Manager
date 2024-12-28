@@ -108,3 +108,4 @@ Contributions are welcome! If you would like to contribute to the Spotify Manage
 2. Make your changes and ensure they are well-tested.
 
 3. Document your changes clearly.
+# Spotify-Manager
